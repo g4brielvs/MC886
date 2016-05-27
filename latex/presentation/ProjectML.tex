@@ -1,0 +1,258 @@
+%% LaTeX Beamer presentation template (requires beamer package)
+%% see http://bitbucket.org/rivanvx/beamer/wiki/Home
+
+\documentclass{beamer}
+
+\mode<presentation>
+{
+\usetheme{Berkeley}
+
+\setbeamercovered{transparent}
+}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% font definitions, try \usepackage{ae} instead of the following
+% three lines if you don't like this look
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+
+\usefonttheme[onlymath]{serif}
+\usepackage{tcolorbox}
+\usepackage{algorithm,algpseudocode}
+\usepackage{amsmath}
+\usepackage{array} 
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{color}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+
+\title{A Multi-Layer Modeling Approach to Music Genre Classification}
+\subtitle{MC886 - Final Project}
+
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+%\author{F.~Author\inst{1} \and S.~Another\inst{2}}
+\author{Renan V. Novas \and Gabriel S. Vicente}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+\institute{Universidade Estadual de Campinas}
+%{
+%\inst{1}%
+%Department of Computer Science\\
+%Univ of S
+%\and
+%\inst{2}%
+%Department of Theoretical Philosophy\\
+%Univ of E}
+\date{\today}
+
+% This is only inserted into the PDF information catalog. Can be left
+% out.
+\subject{Talks}
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+%\pgfdeclareimage[height=0.5cm]{university-logo}{img/LogoUnicamp.jpg}
+%\logo{\pgfuseimage{university-logo}}
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+%\AtBeginSubsection[]
+%{
+%\begin{frame}<beamer>
+%\frametitle{Outline}
+%\tableofcontents[currentsection,currentsubsection]
+%\end{frame}
+%}
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command:
+
+%\beamerdefaultoverlayspecification{<+->}
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+\section{Motivation}
+\begin{frame}
+
+\begin{itemize}
+  \item \alert{Music Information Retrieval}
+  \begin{itemize}
+  \item Instrument and musical structure recognition
+  \item Recommendation and taste prediction engines
+  \item Automatic music transcription and algorithmic composition 
+  \item Automatic categorization
+  \end{itemize}
+\end{itemize}
+
+\begin{columns}[t]
+\begin{column}{.5\textwidth}
+\includegraphics[width=0.5\textwidth]{../Report/img/LogoTheEchoNest.jpg}
+\hspace*{0.15in}
+\includegraphics[width=0.5\textwidth]{img/LogoSpotiy.jpg}
+
+\end{column}
+\begin{column}{.5\textwidth}
+\includegraphics[width=0.5\textwidth]{img/LogoPandora.jpg}
+\includegraphics[width=0.5\textwidth]{img/LogoLastfm.png}  
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Related Work}
+\begin{frame}
+\begin{itemize}
+  \item \textbf{Ogihara, Mitsunori et al.} A Comparative Study on Content-based
+  Music Genre Classification
+  \item \textbf{Liang, Dawen et al. }Music Genre Classification
+with the Million Song Dataset
+\end{itemize}
+\end{frame}
+
+\section{Experiments and Results}
+\subsection{Million Song Dataset}
+
+\begin{frame}
+\frametitle{Million Song Dataset}
+
+\begin{columns}[t]
+\begin{column}{.3\textwidth}
+\adjincludegraphics[width=0.8\linewidth,valign=t]{../Report/img/LogoMSD.jpg}
+\end{column}
+\begin{column}{.7\textwidth}
+\begin{itemize}
+  \item \alert{1,000,000,000 tracks dataset!}
+  \begin{itemize}
+    \item The Echo Nest (Spotify) and LabROSA (Columbia University)
+    \nocite{Bertin-Mahieux2011}
+   \end{itemize}
+\end{itemize}
+\end{column}
+\end{columns}
+
+\vspace{1cm}
+
+Purposes:
+  \begin{itemize}
+    \item To encourage research on algorithms that scale to commercial sizes
+    \item To provide a reference dataset for evaluating research
+    \item As a shortcut alternative to creating a large dataset with APIs 
+    \item To help new researchers get started in the MIR field
+   \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Million Song Dataset}
+\framesubtitle{Example Track}
+\centering
+\adjincludegraphics[scale=0.35,valign=t]{img/MSDSongFeatures.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Recreating the dataset}
+
+\begin{itemize}
+  \item \alert{Issues}
+  \begin{itemize}
+    \item Unbalancedness
+	\item Tags subjectivity
+  \end{itemize}
+\end{itemize}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l|c|c}
+\textbf{Genre}   	  & Training & Test  \\ \hline
+dance and electronica & 2,880 	 & 320   \\
+folk           		  & 2,880	 & 320	 \\
+jazz and blues        & 2,880 	 & 320   \\
+punk				  & 2,880    & 320   \\
+soul and reggae       & 2,880	 & 320   \\ \hline
+					  & 14,400	 & 1,600  \\
+\end{tabular}
+\end{center}
+\end{table}
+\end{frame}
+
+\subsection{Audio features}
+\frametitle{Audio features}
+\begin{frame}
+\begin{itemize}
+  \item 30 audio-descriptive features inspired by The Echo Nest
+  \item \alert{Referente features}
+  \begin{itemize}
+    \item Loudness
+    \item Tempo
+    \item Time signature
+    \item Key
+    \item Mode
+    \item Duration
+  \end{itemize}
+   \item \alert{Timbral features}
+  \begin{itemize}
+    \item 12 timbral averages
+    \item 12 timbral variances
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{SVM}
+\begin{frame}
+\frametitle{SVM classifiers}
+\begin{itemize}
+  \item One $\times$ One
+  \item One $\times$ Rest
+\end{itemize}
+\end{frame}
+
+\subsection{Discussion}
+
+\begin{frame}
+\frametitle{Confusion Matrix}
+\centering
+
+\begin{table}[H]
+\begin{center}
+\caption{Confusion Matrix}
+\begin{tabular}{|l|*5{c|r|}}
+\hline
+ & \multicolumn{5}{c|}{Predicted Genre} & \\ \hline
+ & A  & B  & C  & D  & E  &     \\ \hline
+A& 224& 21 & 24 & 17 & 34 & 320 \\ \hline
+B& 12 & 224& 39 & 15 & 30 & 320 \\ \hline
+C& 27 & 42 & 223&  9 & 19 & 320 \\ \hline
+D& 24 & 15 & 7  &240 & 34 & 320 \\ \hline
+E& 39 & 36 & 16 & 11 & 218& 320 \\ \hline
+ & 326 &338 & 309 & 292 & 335 & \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Model Comparison}
+\centering
+\adjincludegraphics[width=0.8\textwidth]{../Report/img/ModelComparison.png}
+\end{frame}
+
+\section{References}
+
+%\begin{frame}[allowframebreaks]
+%\frametitle{References}
+%\bibliographystyle{amsalpha}
+%\bibliography{../Report/refs}
+%\end{frame}
+
+
+
+\end{document}
