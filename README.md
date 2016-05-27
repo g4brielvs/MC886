@@ -37,3 +37,8 @@ dataset.
 - **Rhythm descriptors** beat detection, BPM, rhythm transform, beat loudness, rhythm similarity or homogeneity.
 - **Time-domain descriptors** duration, loudness, zero-crossing-rate log attack time and other signal envelope descriptors.
 - **Statistical descriptors** median, mean, variance, power means, flatness.
+
+## Reports
+
+- [Final report](latex/report/ReportML.pdf)
+- [Presentation](latex/presentation/ProjectML.pdf)
